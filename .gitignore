@@ -1,0 +1,6 @@
+/www/.htaccess
+/config.inc.php
+/.project
+/.settings
+/.buildpath
+.DS_Store
