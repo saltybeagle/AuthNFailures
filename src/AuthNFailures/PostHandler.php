@@ -43,12 +43,16 @@ class PostHandler
 
         $object = new $this->options['model']($this->options);
 
-        if ($object instanceof PostHandlerInterface) {
-            return $object->handlePost($this->options, $this->post, $this->files);
+        if ($object instanceof ActiveRecord\PostHandlerInterface) {
+            $result = $object->handlePost($this->options, $this->post, $this->files);
+            return $this->handleActiveRecordResult($result);
         }
 
         if (is_subclass_of($this->options['model'], __NAMESPACE__ . '\ActiveRecord\Record')) {
-            return $this->handleActiveRecord();
+            $handler = new Record\PostHandler($this->options['model'], $this->options, $this->post, $this->files);
+
+            $result = $handler->handle();
+            return $this->handleActiveRecordResult($result);
         }
 
         // An error must have occurred
@@ -56,17 +60,10 @@ class PostHandler
 
     }
 
-    public function handleActiveRecord()
+    public function handleActiveRecordResult($result)
     {
-        $handler = new Record\PostHandler($this->options['model'], $this->options, $this->post, $this->files);
-
-        $result = $handler->handle();
         $url    = Controller::$url;
         $action = 'deleted';
-
-        //Get the table.
-        $table = new $this->options['model']();
-        $table = $table->getTable();
 
         //Determine what to say and where to redirect.
         if ($result instanceof Record) {
@@ -81,7 +78,7 @@ class PostHandler
         }
 
         if ($result) {
-            Notifications::notify('success', $this->getUserFriendlyTableName($table) . " $action!", 5);
+            Notifications::notify('success', $this->getUserFriendlyTableName($result->getTable()) . " $action!", 5);
 
             if (isset($this->options['format'])
                 && $this->options['format'] != 'html') {
@@ -89,7 +86,7 @@ class PostHandler
             }
             $this->redirect($url);
         } else {
-            Notifications::notify('error', $this->getUserFriendlyTableName($table) . " not $action!", 5);
+            Notifications::notify('error', "The record was not $action!", 5);
         }
 
         return $result;

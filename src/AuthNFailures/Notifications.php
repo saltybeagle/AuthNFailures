@@ -1,10 +1,10 @@
 <?php
-namespace Buros;
+namespace AuthNFailures;
 
 class Notifications
 {
     public static function notify($type, $message, $duration)
     {
-        $result = setcookie('buros_notifications['.$type.']', $message, time()+$duration, "/");
+        $result = setcookie('authn_notifications['.$type.']', $message, time()+$duration, "/");
     }
 }

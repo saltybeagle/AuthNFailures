@@ -2,7 +2,9 @@
 
 namespace AuthNFailures\ActiveRecord\Record;
 
-use AuthNFailures\Exception as Exception;
+use AuthNFailures\ActiveRecord\Record;
+use AuthNFailures\Exception;
+use AuthNFailures\ActiveRecord\PostHandlerInterface;
 
 /**
  * This class is used to generate a generic edit form for a Record
@@ -10,7 +12,7 @@ use AuthNFailures\Exception as Exception;
  *
  * @author Brett Bieber
  */
-class EditForm
+class EditForm extends Record implements PostHandlerInterface
 {
     /**
      * The Record object
@@ -54,6 +56,17 @@ class EditForm
             throw new Exception('Invalid record id specified', 404);
         }
 
+    }
+
+    public function handlePost($options = array(), $post = array(), $files = array())
+    {
+        $handler = new PostHandler(get_class($this->record), $options, $post, $files);
+        return $handler->handle();
+    }
+
+    function keys()
+    {
+        return $this->getRecord()->keys();
     }
 
     function getURL()
