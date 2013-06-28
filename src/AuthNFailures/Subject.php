@@ -57,25 +57,44 @@ class Subject
     /**
      * Increment the authentication counter for this subject
      *
-     * @param string|int $service    Name or ID of the service
-     * @param string     $ip_address IP address for the remote authn attempt
-     * @param int        $timestamp  Time of the event
+     * @param string|int $service      Name or ID of the service
+     * @param string     $ip_address   IP address for the remote authn attempt
+     * @param int        $timestamp    Time of the event
+     * @param string|int $external_key An external unique key for this event
+     * @param string     $raw_data     Raw event data, e.g. lines from the LDAP log file
      */
-    public function increment($service = null, $ip_address = null, $timestamp = null)
+    public function addEvent($service = null, $ip_address = null, $timestamp = null, $external_key = null, $raw_data = null)
     {
         $event = new Event();
         $event->subject    = $this->getId();
         $event->service    = $service;
         $event->ip_address = $ip_address;
         $event->timestamp  = $timestamp;
+        $event->external_key = $external_key;
+        $event->raw_data     = $raw_data;
         $event->save();
 
-        $count = Count::getBySubject($this->getId());
-        $count->current_count = $current_count + 1;
-        $count->save();
+        $this->updateCount();
 
         return $this;
 
+    }
+
+    /**
+     * Update total count for the subject
+     */
+    public function updateCount()
+    {
+        if ($count = Count::getBySubject($this->getId())) {
+            // already have a count
+        } else {
+            // new subject
+            $count = new Count();
+            $count->subject = $this->getId();
+            $count->current_count = 0;
+        }
+        $count->current_count = $count->current_count + 1;
+        $count->save();
     }
 
 }
