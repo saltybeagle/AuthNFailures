@@ -35,3 +35,23 @@ $splunk_config = array(
     'password' => 'changeme',
 );
 
+// Set of Splunk searches and callbacks
+$splunk_searches = array();
+
+/*
+// Sample Splunk search & callback configuration
+$splunk_searches['search authentication failure | head 100'] = function($iterator) {
+    $result = $iterator->current();
+    $subject = new Subject();
+    $subject->setId($result['uid']);
+    $subject->addEvent(
+        $result['service'],
+        $result['ip_address'],
+        $result['_idxtime'],
+        sha1($result['_raw']),
+        $result['_raw']
+    );
+    // return true for iteration to continue
+    return true;
+}
+*/
