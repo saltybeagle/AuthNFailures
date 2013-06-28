@@ -1,6 +1,8 @@
 <?php
 namespace AuthNFailures;
 
+use AuthNFailures\ActiveRecord\Database;
+
 /**
  * A subject to track authentication failures for
  *
@@ -74,10 +76,28 @@ class Subject
         $event->raw_data     = $raw_data;
         $event->save();
 
-        $this->updateCount();
+        $this->incrementCount();
 
         return $this;
 
+    }
+
+    /**
+     * Increment the counter for the subject by one
+     */
+    public function incrementCount()
+    {
+        $db = Database::getDB();
+
+        $sql = 'INSERT INTO `counts` (subject, current_count) VALUES (?, 1)
+                ON DUPLICATE KEY UPDATE current_count = current_count + 1;';
+
+        $stmt = $db->prepare($sql);
+
+        $id = $this->getId();
+        $stmt->bind_param('s', $id);
+
+        $stmt->execute();
     }
 
     /**
@@ -85,16 +105,8 @@ class Subject
      */
     public function updateCount()
     {
-        if ($count = Count::getBySubject($this->getId())) {
-            // already have a count
-        } else {
-            // new subject
-            $count = new Count();
-            $count->subject = $this->getId();
-            $count->current_count = 0;
-        }
-        $count->current_count = $count->current_count + 1;
-        $count->save();
+        // @TODO Update count should calculate what the total count should be
+
     }
 
 }
