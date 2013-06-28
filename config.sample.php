@@ -9,7 +9,11 @@ function autoload($class)
 
 spl_autoload_register('AuthNFailures\autoload');
 
-set_include_path(__DIR__ . '/src' . PATH_SEPARATOR . __DIR__ . '/vendor/php');
+set_include_path(
+        __DIR__ . '/src'
+        . PATH_SEPARATOR . __DIR__ . '/vendor/pyrus/php'
+        . PATH_SEPARATOR . __DIR__ . '/vendor/splunk-sdk-master'
+);
 
 ini_set('display_errors', true);
 error_reporting(E_ALL);
@@ -23,4 +27,11 @@ ActiveRecord\Database::setDbSettings(array(
     'password' => 'authn_events',
     'dbname'   => 'authn_events'
 ));
+
+$splunk_config = array(
+    'host'     => 'localhost',
+    'port'     => '8089',
+    'username' => 'user',
+    'password' => 'changeme',
+);
 
