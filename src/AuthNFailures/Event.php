@@ -11,6 +11,8 @@ class Event extends ActiveRecord\Record
     public $service;
     public $ip_address;
     public $timestamp;
+    public $external_key;
+    public $raw_data;
 
     public static function getTable()
     {
