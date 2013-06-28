@@ -30,4 +30,13 @@ class Event extends ActiveRecord\Record
 
         return Controller::$url . 'events/' . $this->id;
     }
+
+    public function save()
+    {
+        if (!$this->timestamp) {
+            $this->timestamp = time();
+        }
+
+        return parent::save();
+    }
 }
