@@ -11,6 +11,8 @@
  */
 namespace AuthNFailures\ActiveRecord;
 
+use AuthNFailures\ActiveRecord\Exception\PreparedStatementException;
+
 use AuthNFailures\Controller as Controller;
 
 abstract class Record
@@ -160,7 +162,8 @@ abstract class Record
 
         call_user_func_array(array($stmt, 'bind_param'), $values);
         if ($stmt->execute() === false) {
-            throw new Exception($stmt->error, 500);
+            $previous = new PreparedStatementException($stmt->error, $stmt->errno);
+            throw new Exception($stmt->error, 500, $previous);
         }
 
         if ($mysqli->insert_id !== 0) {
