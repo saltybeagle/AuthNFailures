@@ -20,6 +20,19 @@ class Subject
     }
 
     /**
+     * Sets the ID for the subject
+     *
+     * @param string $id The ID for the subject, e.g. hhusker1 
+     */
+    public function setId($id)
+    {
+        $this->options['id'] = $id;
+
+        // chain
+        return $this;
+    }
+
+    /**
      * Get the id for the subject
      *
      * @return string
