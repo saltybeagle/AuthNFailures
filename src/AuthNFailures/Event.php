@@ -39,6 +39,10 @@ class Event extends ActiveRecord\Record
             $this->timestamp = time();
         }
 
+        if (is_int($this->timestamp)) {
+            $this->timestamp = date('Y-m-d H:i:s', $this->timestamp);
+        }
+
         return parent::save();
     }
 }
