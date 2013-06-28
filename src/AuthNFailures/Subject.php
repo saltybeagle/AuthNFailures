@@ -70,6 +70,12 @@ class Subject
         $event->timestamp  = $timestamp;
         $event->save();
 
+        $count = Count::getBySubject($this->getId());
+        $count->current_count = $current_count + 1;
+        $count->save();
+
+        return $this;
+
     }
 
 }
