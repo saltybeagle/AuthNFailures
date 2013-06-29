@@ -89,7 +89,7 @@ class OutputController extends \Savvy
                 break;
 
             case 'partial':
-                \Savvy_ClassToTemplateMapper::$output_template['Buros\Controller'] = 'Buros/Controller-partial';
+                \Savvy_ClassToTemplateMapper::$output_template['AuthNFailures\Controller'] = 'AuthNFailures/Controller-partial';
                 // intentional no-break
             case 'html':
                 // Always escape output, use $context->getRaw('var'); to get the raw data.

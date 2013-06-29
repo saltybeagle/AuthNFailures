@@ -1,5 +1,5 @@
 <?php
-/* @var $context \Buros\ActiveRecord\Record */
+/* @var $context \AuthNFailures\ActiveRecord\Record */
 $keys = $context->getRawObject()->keys();
 $i = 0;
 $len = count(get_object_vars($context->getRawObject()));

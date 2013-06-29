@@ -1,6 +1,6 @@
 <?php
 $page->pagetitle = '<h1>Advanced Search</h1>';
-$url = $buros->addURLParams('./search', $_GET);
+$url = $controller->addURLParams('./search', $_GET);
 ?>
 <div class="grid3 first">
 <form class="form filters" action="./search" method="get">
@@ -8,7 +8,7 @@ $url = $buros->addURLParams('./search', $_GET);
     <legend>Search Parameters</legend>
     <ol>
         <?php
-        echo $savvy->render(new $context->options['itemClass'], 'Buros/ActiveRecord/SearchFieldIterator.tpl.php');
+        echo $savvy->render(new $context->options['itemClass'], 'AuthNFailures/ActiveRecord/SearchFieldIterator.tpl.php');
         ?>
     </ol>
     </fieldset>
@@ -21,7 +21,7 @@ $url = $buros->addURLParams('./search', $_GET);
     echo $savvy->render($context, $savvy->getClassToTemplateMapper()->map($context->options['listClass']));
     ?>
     <div class="dataset_options">
-        <a href="<?php echo $buros->addURLExtension($url, 'csv'); ?>" class="spreadsheet icon-item">CSV</a>
-        <a href="<?php echo $buros->addURLExtension($url, 'tsv'); ?>" class="spreadsheet icon-item">TSV</a>
+        <a href="<?php echo $controller->addURLExtension($url, 'csv'); ?>" class="spreadsheet icon-item">CSV</a>
+        <a href="<?php echo $controller->addURLExtension($url, 'tsv'); ?>" class="spreadsheet icon-item">TSV</a>
     </div>
 </div>

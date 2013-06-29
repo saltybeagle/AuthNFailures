@@ -22,7 +22,7 @@
         }
 
         // Get all the existing URL querystring parameters
-        $existing_params = $buros->getRawObject()->getURLParams(html_entity_decode($context->url, ENT_QUOTES, 'utf-8'));
+        $existing_params = $controller->getRawObject()->getURLParams(html_entity_decode($context->url, ENT_QUOTES, 'utf-8'));
      ?>
     <form method="get" action="<?php echo $context->url; ?>" class="pagination">
         <label for="page">Go to page:</label>
