@@ -8,6 +8,7 @@ $routes['/^$/']                                     = 'AuthNFailures\WelcomeScre
 $routes['/^manage\/events(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\EventManager';
 $routes['/^manage\/counts(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\CountManager';
 $routes['/^manage\/resets(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\ResetManager';
+$routes['/^manage\/subjects(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\SubjectManager';
 
 // // List of all the active record classes
 // // [collectionurl] = array(listClass, itemClass)
