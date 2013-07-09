@@ -26,6 +26,6 @@ class Reset extends ActiveRecord\Record
             return false;
         }
 
-        return Controller::$url . 'reset/' . $this->id;
+        return Controller::$url . 'resets/' . $this->id;
     }
 }
