@@ -2,6 +2,7 @@
 namespace AuthNFailures;
 
 use AuthNFailures\ActiveRecord\Database;
+use AuthNFailures\ActiveRecord\DynamicRecord;
 
 /**
  * A subject to track authentication failures for
@@ -9,7 +10,7 @@ use AuthNFailures\ActiveRecord\Database;
  * @author Brett Bieber
  *
  */
-class Subject
+class Subject extends DynamicRecord
 {
 
     protected $options = array(
@@ -19,6 +20,11 @@ class Subject
     public function __construct($options = array())
     {
         $this->options = $options + $this->options;
+    }
+
+    public function getKeys()
+    {
+        return array('id');
     }
 
     /**
@@ -107,6 +113,15 @@ class Subject
     {
         // @TODO Update count should calculate what the total count should be
 
+    }
+
+    public function getURL()
+    {
+        if (!isset($this->id)) {
+            return false;
+        }
+
+        return Controller::$url . 'subjects/' . $this->id;
     }
 
 }
