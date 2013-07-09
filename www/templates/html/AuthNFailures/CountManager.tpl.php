@@ -1,12 +1,5 @@
 <?php if (count($context)): ?>
-<ul>
-<?php
-foreach ($context as $count) {
-    /* @var $event \AuthNFailures\Count */
-    echo '<li class=""><a href="'.$count->getURL().'/edit">' . $count->id . '</a></li>';
-}
-?>
-</ul>
+<?php echo $savvy->render($context, 'AuthNFailures/ActiveRecord/RecordSet/Table.tpl.php'); ?>
 <?php
 if (count($context) > $context->options['limit']) {
     $pager = new stdClass();
