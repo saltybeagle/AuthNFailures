@@ -24,7 +24,8 @@ $headers = get_class_vars($options['itemClass']);
         <tr>
             <?php
             foreach ($headers as $column=>$value) {
-                echo '<td><a href="'.$record->getURL().'/edit">' . $record->$column. '</a></td>';
+                $value = nl2br($record->$column);
+                echo '<td><a href="'.$record->getURL().'/edit">' . $value . '</a></td>';
             }
             ?>
         </tr>
