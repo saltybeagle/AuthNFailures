@@ -9,6 +9,8 @@ class Reset extends ActiveRecord\Record
     public $id;
     public $subject;
     public $reset_timestamp;
+    public $external_key;
+    public $raw_data;
 
     public static function getTable()
     {
@@ -27,5 +29,25 @@ class Reset extends ActiveRecord\Record
         }
 
         return Controller::$url . 'resets/' . $this->id;
+    }
+
+    public function save()
+    {
+        $this->reset_timestamp = $this->normalizeTimeStamp($this->reset_timestamp);
+
+        return parent::save();
+    }
+
+    public function normalizeTimeStamp($timestamp)
+    {
+        if (!$timestamp) {
+            $timestamp = time();
+        }
+
+        if (is_int($timestamp)) {
+            $timestamp = date('Y-m-d H:i:s', $timestamp);
+        }
+
+        return $timestamp;
     }
 }
