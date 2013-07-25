@@ -160,6 +160,24 @@ class Subject extends DynamicRecord
         $stmt->execute();
     }
 
+    /**
+     * Get the current count for the subject
+     *
+     * @return int
+     */
+    public function getCurrentCount()
+    {
+        if (isset($this->current_count)) {
+            return $this->current_count;
+        }
+
+        if ($count = Count::getBySubject($this->getId())) {
+            return $count->current_count;
+        }
+
+        return 0;
+    }
+
     public function getURL()
     {
         if (!isset($this->id)) {
