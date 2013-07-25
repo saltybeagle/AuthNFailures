@@ -115,12 +115,25 @@ class Subject extends DynamicRecord
     }
 
     /**
-     * Update total count for the subject
+     * Update the count (since last reset) for the subject
      */
     public function updateCount()
     {
-        // @TODO Update count should calculate what the total count should be
+        $db = Database::getDB();
+        $sql = 'UPDATE counts
+                LEFT JOIN ('.CountManager::getSQLForCountSinceLastReset($this->getId()).') AS current_total_counts
+                        ON counts.subject = current_total_counts.subject
+                SET counts.current_count = IFNULL(current_total_counts.current_count, 0)
+                WHERE counts.subject = ?';
 
+        $stmt = $db->prepare($sql);
+
+        $id = $this->getId();
+        $stmt->bind_param('s', $id);
+        $stmt->bind_param('s', $id);
+        $stmt->bind_param('s', $id);
+
+        $stmt->execute();
     }
 
     public function getURL()
