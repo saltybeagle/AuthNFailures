@@ -1,5 +1,4 @@
-AuthNFailures
-=============
+# AuthNFailures
 
 Application for storing and monitoring aggregated authentication failures.
 
