@@ -71,6 +71,28 @@ class Subject extends DynamicRecord
     }
 
     /**
+     * Add a reset event for this subject
+     *
+     * @param int        $timestamp    Time of the event
+     * @param string|int $external_key An external unique key for this event
+     * @param string     $raw_data     Raw event data, e.g. lines from the LDAP log file
+     *
+     * @return \AuthNFailures\Subject
+     */
+    public function addReset($timestamp = null, $external_key = null, $raw_data = null)
+    {
+        $reset                  = new Reset();
+        $reset->subject         = $this->getId();
+        $reset->reset_timestamp = $timestamp;
+        $reset->external_key    = $external_key;
+        $reset->raw_data        = $raw_data;
+
+        $reset->save();
+
+        return $this;
+    }
+
+    /**
      * Increment the authentication counter for this subject
      *
      * @param string|int $service      Name or ID of the service
