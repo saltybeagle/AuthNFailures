@@ -151,9 +151,8 @@ class Subject extends DynamicRecord
         $stmt = $db->prepare($sql);
 
         $id = $this->getId();
-        $stmt->bind_param('s', $id);
-        $stmt->bind_param('s', $id);
-        $stmt->bind_param('s', $id);
+
+        $stmt->bind_param('sss', $id, $id, $id);
 
         $stmt->execute();
     }
