@@ -22,7 +22,7 @@ class Subject extends DynamicRecord
         $this->options = $options + $this->options;
     }
 
-    public function getKeys()
+    public static function getKeys()
     {
         return array('id');
     }
