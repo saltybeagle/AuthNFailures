@@ -16,4 +16,27 @@ class ResetManager extends Resets
     {
         return 'ORDER BY subject ASC';
     }
+
+    /**
+     * Returns SQL used for determining the latest reset
+     *
+     * If the $subject parameter is passed, a placeholder for a prepared
+     * statement will be inserted.
+     *
+     * @param string $subject ID of the subject
+     *
+     * @return string
+     */
+    public static function getSQLForLastReset($subject = null)
+    {
+        $sql = 'SELECT subject, MAX(reset_timestamp) AS last_reset
+                FROM resets
+                ';
+        if ($subject) {
+            $sql .= 'WHERE subject = ? ';
+        }
+        $sql .='GROUP BY subject';
+
+        return $sql;
+    }
 }
