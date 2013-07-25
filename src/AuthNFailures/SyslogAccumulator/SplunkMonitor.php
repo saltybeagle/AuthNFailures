@@ -26,12 +26,17 @@ class SplunkMonitor
      *
      * @param string  $searchExpression Splunk search expression, must begin with 'search '
      * @param Closure $resultCallback   Callback function to apply to every result @see iterator_apply
+     * @param array   $args             Additional arguments for searching, e.g.
+     *     array(
+     *         'earliest_time' => '-15m',
+     *         'latest_time'   => 'now',
+     *     )
      *
      * @return SplunkMonitor
      */
-    public function searchAndCallback($searchExpression, $resultCallback)
+    public function searchAndCallback($searchExpression, $resultCallback, $args = array())
     {
-        $job = $this->service->search($searchExpression);
+        $job = $this->service->search($searchExpression, $args);
         while (!$job->isDone()) {
             // Wait for job to finish
             usleep(0.5 * 1000000);
@@ -45,5 +50,5 @@ class SplunkMonitor
         iterator_apply($filtered, $resultCallback, array($filtered));
 
         return $this;
-    } 
+    }
 }
