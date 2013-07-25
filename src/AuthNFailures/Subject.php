@@ -51,15 +51,23 @@ class Subject extends DynamicRecord
     }
 
     /**
-     * Resets the counter for the user
+     * Resets the counter for the subject to zero
      *
-     * @param int $timestamp Time of the reset event
+     * @return bool
      */
-    public function resetCounter($timestamp = null)
+    public function resetCounter()
     {
-        if (!$timestamp) {
-            $timestamp = time();
+
+        if ($count = Count::getBySubject($this->getId())) {
+            // all ok
+        } else {
+            $count = new Count();
+            $count->subject = $this->getId();
         }
+
+        $count->current_count = 0;
+        return $count->save();
+
     }
 
     /**
