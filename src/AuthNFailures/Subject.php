@@ -47,6 +47,9 @@ class Subject extends DynamicRecord
      */
     public function getId()
     {
+        if (isset($this->id)) {
+            return $this->id;
+        }
         return $this->options['id'];
     }
 
