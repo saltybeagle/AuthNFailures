@@ -19,7 +19,7 @@ $args = array(
 
 // Find users that used NTLMv1, an insecure protocol
 
-$searchExpression = 'search sourcetype="WinEventLog:Security" EventCode=4624 AND Message=*V1* AND Account_Name!=*$ AND Account_Name != "ANONYMOUS LOGON" | eval uid=mvfilter(Account_Name != "-") | fields + uid + Source_Network_Address + ComputerName + Workstation_Name';
+$searchExpression = 'search sourcetype="WinEventLog:Security" EventCode=4624 AND "NTLM V1" AND Account_Name!=*$ AND Account_Name != "ANONYMOUS LOGON" | eval uid=mvfilter(Account_Name != "-") | fields + uid + Source_Network_Address + ComputerName + Workstation_Name';
 
 $resultCallback = function($iterator) {
     $result = $iterator->current();
