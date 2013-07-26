@@ -26,8 +26,10 @@ $resultCallback = function($iterator) {
 
     $client = '{unknown client machine}';
     if ($result['Source_Network_Address'] != '-') {
+        // prefer the IP address
         $client = $result['Source_Network_Address'];
     } elseif (isset($result['Workstation_Name'])) {
+        // ok, we'll take the machine name
         $client = $result['Workstation_Name'];
     }
 
