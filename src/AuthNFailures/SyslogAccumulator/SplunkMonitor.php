@@ -51,4 +51,24 @@ class SplunkMonitor
 
         return $this;
     }
+
+    /**
+     * Return the last time from an optionally multi-valued $result['_indextime'] field
+     *
+     * @param int|array $time The timestamp from a splunk event
+     *
+     * @return number
+     */
+    public static function getLastSplunkIndexTimestamp($time)
+    {
+        // The timestamp can be a range of time!
+        if (is_array($time)) {
+            // Use the last second
+            $time = (int)array_pop($time);
+        } else {
+            $time = (int)$time;
+        }
+    
+        return $time;
+    }
 }
