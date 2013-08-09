@@ -70,7 +70,8 @@ abstract class RecordList extends \LimitIterator implements \Countable
                . $this->getFromClause() . ' '
                . $this->getWhereClause() . ' '
                . $this->getGroupByClause() . ' '
-               . $this->getOrderByClause();
+               . $this->getOrderByClause() . ' '
+               . $this->getLimitClause();
 
         return $sql;
     }
@@ -116,6 +117,19 @@ abstract class RecordList extends \LimitIterator implements \Countable
      */
     protected function getGroupByClause()
     {
+        return '';
+    }
+
+    /**
+     * Get the LIMIT clause for the default SQL
+     *
+     * @return string
+     */
+    protected function getLimitClause()
+    {
+        if (isset($this->options, $this->options['limit'], $this->options['offset'])) {
+            return 'LIMIT '.(int)$this->options['offset'].', '.(int)$this->options['limit'];
+        }
         return '';
     }
 
@@ -188,11 +202,32 @@ abstract class RecordList extends \LimitIterator implements \Countable
         return call_user_func_array($this->options['itemClass'] . "::getByID", $current);
     }
 
+    /**
+     * Get the count for the record list using the limit parameters set
+     *
+     * @see Countable::count()
+     */
     public function count()
     {
         $iterator = $this->getInnerIterator();
         if ($iterator instanceof EmptyIterator) {
             return 0;
+        }
+
+        if (isset($this->options['limit'])
+            && $this->options['limit'] > -1) {
+            $sql = 'SELECT count(*) AS result_count ' 
+               . $this->getFromClause() . ' '
+               . $this->getWhereClause() . ' '
+               . $this->getGroupByClause() . ' '
+               . $this->getOrderByClause();
+
+            $mysqli = Database::getDB();
+            $result = $mysqli->query($sql);
+
+            if ($row = $result->fetch_array(MYSQLI_NUM)) {
+                return $row['0'];
+            }
         }
 
         return count($this->getInnerIterator());
