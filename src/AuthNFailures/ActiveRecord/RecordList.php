@@ -77,6 +77,22 @@ abstract class RecordList extends \LimitIterator implements \Countable
     }
 
     /**
+     * Get the default SQL for determining the count of TOTAL records
+     *
+     * @return sql
+     */
+    protected function getCountSQL()
+    {
+        $sql = 'SELECT count(*) AS result_count ' 
+               . $this->getFromClause() . ' '
+               . $this->getWhereClause() . ' '
+               . $this->getGroupByClause() . ' '
+               . $this->getOrderByClause();
+
+        return $sql;
+    }
+
+    /**
      * Get the SELECT portion of the query
      *
      * @return string
@@ -216,11 +232,8 @@ abstract class RecordList extends \LimitIterator implements \Countable
 
         if (isset($this->options['limit'])
             && $this->options['limit'] > -1) {
-            $sql = 'SELECT count(*) AS result_count ' 
-               . $this->getFromClause() . ' '
-               . $this->getWhereClause() . ' '
-               . $this->getGroupByClause() . ' '
-               . $this->getOrderByClause();
+
+            $sql = $this->getCountSQL();
 
             $mysqli = Database::getDB();
             $result = $mysqli->query($sql);
