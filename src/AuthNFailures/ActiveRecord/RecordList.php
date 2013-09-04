@@ -143,7 +143,8 @@ abstract class RecordList extends \LimitIterator implements \Countable
      */
     protected function getLimitClause()
     {
-        if (isset($this->options, $this->options['limit'], $this->options['offset'])) {
+        if (isset($this->options, $this->options['limit'], $this->options['offset'])
+            && $this->options['limit'] > -1) {
             return 'LIMIT '.(int)$this->options['offset'].', '.(int)$this->options['limit'];
         }
         return '';
