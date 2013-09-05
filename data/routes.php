@@ -10,6 +10,9 @@ $routes['/^manage\/counts(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\CountManage
 $routes['/^manage\/resets(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\ResetManager';
 $routes['/^manage\/subjects(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\SubjectManager';
 
+
+$routes['/^subjects\/(?P<id>[\w]+)(\.(?P<format>[\w]+))?$/'] = 'AuthNFailures\Subject';
+
 // // List of all the active record classes
 // // [collectionurl] = array(listClass, itemClass)
 // $active_records = array(
