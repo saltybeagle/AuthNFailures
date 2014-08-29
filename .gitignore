@@ -1,7 +1,5 @@
 /www/.htaccess
 /config.inc.php
-/.project
 /.settings
+/.project
 /.buildpath
-.DS_Store
-/docs/authn_events.mwb.bak
