@@ -18,20 +18,6 @@ class OutputController extends \Savvy
                 $this->setTemplateFormatPaths($options['format']);
                 break;
 
-            case 'epub':
-                header('Content-type:application/epub+zip');
-                // Escape output
-                $this->setEscape(function($data) {
-                    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8', false);
-                });
-                $this->setTemplateFormatPaths($options['format']);
-                break;
-
-            case 'pdf':
-                header('Content-type:application/pdf');
-                $this->setTemplateFormatPaths($options['format']);
-                break;
-
             case 'csv':
                 if (!isset($this->options['delimiter'])) {
                     $this->options['delimiter'] = ',';
@@ -49,43 +35,6 @@ class OutputController extends \Savvy
             case 'txt':
                 header('Content-type:text/plain;charset=UTF-8');
                 $this->setTemplateFormatPaths($options['format']);
-                break;
-
-            case 'tsv':
-                $filename = $this->getAttachmentFilename($options);
-                header('Content-disposition: attachment; filename=' . $filename);
-
-                header('Content-type:text/plain;charset=binary');
-                $this->setTemplateFormatPaths($options['format']);
-
-                $this->addGlobal('delimiter', "\t");
-
-                $this->addGlobal('delimitArray', function($delimiter, $array){
-                    $string = "";
-                    $i = 0;
-                    foreach ($array as $key=>$value) {
-                        if ($i > 0) {
-                            $string .= "\t";
-                        }
-
-                        //Remove included tab characters (sanitize)
-                        $value = str_replace(array($delimiter), "", $value);
-
-                        //Add vertical tabs
-                        $value = str_replace(array("\n", "\r"), "\v", $value);
-
-                        $value = trim($value, "\v");
-
-                        $string .= $key . $delimiter . $value;
-
-                        $i++;
-                    }
-
-                    $string .= "\n";
-
-                    return $string;
-                });
-
                 break;
 
             case 'partial':
@@ -148,13 +97,7 @@ class OutputController extends \Savvy
         $web_dir = dirname(dirname(__DIR__)) . '/www';
 
         $paths = array();
-        if ($format == 'tsv') {
-            //Fall back on csv templates to reduce code duplication
-            $paths[] = $web_dir . '/templates/csv';
-        }
         $paths[] = $web_dir . '/templates/' . $format;
-        
-        
 
         $this->setTemplatePath($paths);
         
