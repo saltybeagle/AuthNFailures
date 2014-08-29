@@ -3,7 +3,7 @@
 <?php
 foreach ($context as $subject) {
     /* @var $event \AuthNFailures\Subject */
-    echo '<li class=""><a href="'.$subject->getURL().'/edit">' . $subject->id . '</a></li>';
+    echo '<li class=""><a href="'.$subject->getURL().'">' . $subject->id . '</a></li>';
 }
 ?>
 </ul>
