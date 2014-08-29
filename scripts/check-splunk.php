@@ -21,11 +21,21 @@ require_once $config_file;
 
 $monitor = new SplunkMonitor($splunk_config);
 
+// find events up to 15 minutes ago
+$earliest_time = '-15m';
+
+// unless we know when the last-run was
+if (file_exists(__DIR__ . '/check-splunk-last-run.txt')) {
+	$earliest_time = file_get_contents(__DIR__ . '/check-splunk-last-run.txt');
+}
+
 $args = array(
-    'earliest_time' => '-15m', // find events up to 15 minutes ago
+    'earliest_time' => $earliest_time,
     'latest_time'   => 'now',  // until now
 );
 
 foreach ($splunk_searches as $searchExpression => $resultCallback) {
     $monitor->searchAndCallback($searchExpression, $resultCallback, $args);
 }
+
+file_put_contents(__DIR__ . '/check-splunk-last-run.txt', time());

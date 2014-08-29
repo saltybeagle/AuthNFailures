@@ -1,5 +1,6 @@
 /www/.htaccess
 /config.inc.php
+/scripts/check-splunk-last-run.txt
 /.settings
 /.project
 /.buildpath
