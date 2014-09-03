@@ -187,6 +187,16 @@ class Subject extends DynamicRecord
     {
         return new Subject\RecentActivity(array('subject_id'=>$this->getId()));
     }
+
+    /**
+     * Get this user's resets
+     *
+     * @return \AuthNFailures\Subject\Resets
+     */
+    public function getResets()
+    {
+    	return new Subject\Resets(array('subject_id'=>$this->getId()));
+    }
     
     public function getURL()
     {
