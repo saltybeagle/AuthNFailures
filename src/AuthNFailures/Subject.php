@@ -178,6 +178,16 @@ class Subject extends DynamicRecord
         return 0;
     }
 
+    /**
+     * Get this user's recent activity
+     *
+     * @return \AuthNFailures\Subject\RecentActivity
+     */
+    public function getRecentActivity()
+    {
+        return new Subject\RecentActivity(array('subject_id'=>$this->getId()));
+    }
+    
     public function getURL()
     {
         if (!isset($this->id)) {

@@ -1,0 +1,1 @@
+<?php echo $savvy->render($context, 'AuthNFailures/ActiveRecord/RecordSet/Table.tpl.php'); ?>
