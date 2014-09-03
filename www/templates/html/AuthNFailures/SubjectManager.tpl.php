@@ -13,7 +13,7 @@ if (count($context) > $context->options['limit']) {
     $pager->total  = count($context);
     $pager->limit  = $context->options['limit'];
     $pager->offset = $context->options['offset'];
-    $pager->url    = './resets';
+    $pager->url    = './subjects';
     echo $savvy->render($pager, 'PaginationLinks.tpl.php');
 }
 ?>
