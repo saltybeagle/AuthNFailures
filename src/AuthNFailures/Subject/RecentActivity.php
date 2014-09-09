@@ -8,8 +8,8 @@ use AuthNFailures\Exception;
 class RecentActivity extends Events
 {
     public $options = array(
-        'limit'  => 30,
-        'offset' => 0,
+        'limit'  		  => 30,
+        'offset'          => 0,
         'reset_timestamp' => null,
     );
 
