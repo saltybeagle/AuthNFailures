@@ -54,12 +54,26 @@ class Subject extends DynamicRecord
     }
 
     /**
-     * Resets the counter for the subject to zero
+     * Resets the counter for the subject
+     *
+     * @parm int $reset_timestamp The time of the reset.
+     *     If present, will reset the count to the number of events after this timestamp.
      *
      * @return bool
      */
-    public function resetCounter()
+    public function resetCounter($reset_timestamp = null)
     {
+        $reset_count_to = 0;
+
+        if (isset($reset_timestamp)) {
+            $options = array(
+                'reset_timestamp' => $reset_timestamp,
+                'count' 		  => -1,
+                'offset'          => 0,
+            );
+            $recent_activity = $this->getRecentActivity($options);
+            $reset_count_to = count($recent_activity);
+        }
 
         if ($count = Count::getBySubject($this->getId())) {
             // all ok
@@ -68,7 +82,7 @@ class Subject extends DynamicRecord
             $count->subject = $this->getId();
         }
 
-        $count->current_count = 0;
+        $count->current_count = $reset_count_to;
         return $count->save();
 
     }
@@ -183,9 +197,10 @@ class Subject extends DynamicRecord
      *
      * @return \AuthNFailures\Subject\RecentActivity
      */
-    public function getRecentActivity()
+    public function getRecentActivity($options = array())
     {
-        return new Subject\RecentActivity(array('subject_id'=>$this->getId()));
+        $options['subject_id'] = $this->getId();
+        return new Subject\RecentActivity($options);
     }
 
     /**
@@ -195,7 +210,7 @@ class Subject extends DynamicRecord
      */
     public function getResets()
     {
-    	return new Subject\Resets(array('subject_id'=>$this->getId()));
+        return new Subject\Resets(array('subject_id'=>$this->getId()));
     }
     
     public function getURL()

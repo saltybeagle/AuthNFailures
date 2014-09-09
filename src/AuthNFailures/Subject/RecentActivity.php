@@ -10,6 +10,7 @@ class RecentActivity extends Events
     public $options = array(
         'limit'  => 30,
         'offset' => 0,
+        'reset_timestamp' => null,
     );
 
     public function __construct($options = array())
@@ -22,7 +23,13 @@ class RecentActivity extends Events
     
     public function getWhereClause()
     {
-        return 'WHERE subject = "'.$this->escapeString($this->options['subject_id']).'"';
+        $where = 'WHERE subject = "'.$this->escapeString($this->options['subject_id']).'"';
+
+        if (isset($this->options['reset_timestamp'])) {
+            ' AND timestamp > '.(int)$this->options['reset_timestamp'];
+        }
+
+        return $where;
     }
 
     public function getOrderByClause()
