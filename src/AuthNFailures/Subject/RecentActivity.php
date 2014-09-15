@@ -26,7 +26,7 @@ class RecentActivity extends Events
         $where = 'WHERE subject = "'.$this->escapeString($this->options['subject_id']).'"';
 
         if (isset($this->options['reset_timestamp'])) {
-            ' AND timestamp > '.(int)$this->options['reset_timestamp'];
+            $where .= ' AND timestamp > "'.$this->escapeString($this->options['reset_timestamp']).'"';
         }
 
         return $where;
