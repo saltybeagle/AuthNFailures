@@ -68,7 +68,7 @@ class Subject extends DynamicRecord
         if (isset($reset_timestamp)) {
             $options = array(
                 'reset_timestamp' => $reset_timestamp,
-                'count' 		  => -1,
+                'count'           => -1,
                 'offset'          => 0,
             );
             $recent_activity = $this->getRecentActivity($options);
