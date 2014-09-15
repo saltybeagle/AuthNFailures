@@ -212,6 +212,21 @@ class Subject extends DynamicRecord
     {
         return new Subject\Resets(array('subject_id'=>$this->getId()));
     }
+
+    /**
+     * Get the most recent reset event for this user
+     *
+     * @return \AuthNFailures\Reset
+     */
+    public function getRecentReset()
+    {
+        $resets = $this->getResets();
+        foreach ($resets as $reset) {
+            return $reset;
+        }
+
+        return false;
+    }
     
     public function getURL()
     {
