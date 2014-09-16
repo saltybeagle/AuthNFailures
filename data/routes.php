@@ -14,6 +14,7 @@ $routes['/^manage\/counts'.$format.'$/']   = 'AuthNFailures\CountManager';
 $routes['/^manage\/resets'.$format.'$/']   = 'AuthNFailures\ResetManager';
 $routes['/^manage\/subjects'.$format.'$/'] = 'AuthNFailures\SubjectManager';
 
+$routes['/^reports\/topfailures'.$format.'$/'] = 'AuthNFailures\Reports\Over500FailuresByIPAndSubject';
 
 $routes['/^subjects\/(?P<id>[\w]+)'.$format.'$/'] = 'AuthNFailures\Subject';
 
