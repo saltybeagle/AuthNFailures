@@ -29,7 +29,7 @@ abstract class RecordList extends \LimitIterator implements \Countable
     {
         $this->options = $options + $this->options;
 
-        $this->options = $this->options + $this->getDefaultOptions();
+        $this->options = $this->getDefaultOptions() + $this->options;
 
         if (!isset($this->options['listClass'])) {
             throw new Exception("No List Class was set", 500);
@@ -39,24 +39,36 @@ abstract class RecordList extends \LimitIterator implements \Countable
             throw new Exception("No Item Class was set", 500);
         }
 
-        if (!isset($this->options['array'])) {
-            //get a lit of all of them by default.
-            $this->options['array'] = $this->getAllForConstructor();
+        //get a list of all the items
+        $items = $this->getAllForConstructor();
+
+        $this->keys = array();
+
+        if (method_exists($this->options['itemClass'], 'getKeys')) {
+            $this->keys = call_user_func($this->options['itemClass'] . '::getKeys');
         }
 
-        $this->keys = call_user_func($this->options['itemClass'] . "::getKeys");
-
-        $list = new \ArrayIterator($this->options['array']);
+        $list = new \ArrayIterator($items);
 
         parent::__construct($list, $this->options['offset'], $this->options['limit']);
     }
 
+    /**
+     * Get the resulting records for the ArrayIterator constructor
+     *
+     * @return array Array of results
+     *
+     * @throws Exception
+     */
     protected function getAllForConstructor()
     {
-        $options['sql']         = $this->getSQL();
-        $options['returnArray'] = true;
+        $mysqli = Database::getDB();
 
-        return $this->getBySQL($options);
+        if (!($result = $mysqli->query($this->getSQL()))) {
+            throw new Exception($mysqli->errno.':'.$mysqli->error, 500);
+        }
+
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     /**
@@ -113,7 +125,7 @@ abstract class RecordList extends \LimitIterator implements \Countable
     {
         $table = call_user_func(array($this->options['itemClass'], 'getTable'));
 
-        return ' FROM ' . Database::getDB()->escape_string($table);
+        return ' FROM `' . Database::getDB()->escape_string($table) . '`';
     }
 
     /**
@@ -158,45 +170,6 @@ abstract class RecordList extends \LimitIterator implements \Countable
     protected function getOrderByClause()
     {
         return '';
-    }
-
-     /**
-     * generate a list by sql.
-     *
-     * @param $options
-     *        $options['sql'] = the sql string. (required)
-     *        $options['listClass'] the class of the list. (optional (required if returning an iterator))
-     *        $options['itemClass'] the class of each item in the list. (optional (required if returning an iterator))
-     *        $options['returnArray'] return an array instead of an iterator. (optional).
-     *
-     * @return mixed
-     */
-    public static function getBySQL(array $options)
-    {
-        if (!isset($options['sql'])) {
-            throw new Exception("options['sql'] was not set!", 500);
-        }
-
-        $mysqli           = Database::getDB();
-        $options['array'] = array();
-
-        if (!($result = $mysqli->query($options['sql']))) {
-            throw new Exception($mysqli->errno.':'.$mysqli->error, 500);
-        }
-
-        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            $options['array'][] = $row;
-        }
-
-        if (isset($options['returnArray']) && $options['returnArray'] == true) {
-            return $options['array'];
-        }
-
-        if (!isset($options['listClass'], $options['itemClass'])) {
-            throw new Exception("options['listClass'] or options['itemClass'] were not set!", 500);
-        }
-
-        return new $options['listClass']($options);
     }
 
     public static function escapeString($string)
