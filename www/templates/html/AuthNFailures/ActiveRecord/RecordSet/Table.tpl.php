@@ -29,7 +29,7 @@ if (count($headers) == 0) {
             foreach ($headers as $column=>$value) {
                 $value = nl2br($record->$column);
                 echo '<td class="col_'.$column.'">';
-                if (method_exists($record, 'getURL')) {
+                if (method_exists($record->getRawObject(), 'getURL')) {
                    echo '<a href="'.$record->getURL().'/edit">'.$value.'</a>';
                 } else {
                    echo $value;
