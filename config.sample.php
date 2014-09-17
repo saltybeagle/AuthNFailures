@@ -12,7 +12,7 @@ spl_autoload_register('AuthNFailures\autoload');
 set_include_path(
         __DIR__ . '/src'
         . PATH_SEPARATOR . __DIR__ . '/vendor/pyrus/php'
-        . PATH_SEPARATOR . __DIR__ . '/vendor/splunk-sdk-master'
+        . PATH_SEPARATOR . __DIR__ . '/vendor/splunk-sdk-php'
 );
 
 ini_set('display_errors', true);
