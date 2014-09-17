@@ -68,7 +68,13 @@ abstract class RecordList extends \LimitIterator implements \Countable
             throw new Exception($mysqli->errno.':'.$mysqli->error, 500);
         }
 
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $results = array();
+
+    	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            $results[] = $row;
+        }
+
+        return $results;
     }
 
     /**
