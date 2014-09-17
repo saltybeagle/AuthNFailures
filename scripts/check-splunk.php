@@ -34,6 +34,8 @@ $args = array(
     'latest_time'   => 'now',  // until now
 );
 
+require_once __DIR__ . '/splunk-search-definitions.php';
+
 foreach ($splunk_searches as $searchExpression => $resultCallback) {
     $monitor->searchAndCallback($searchExpression, $resultCallback, $args);
 }
