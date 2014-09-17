@@ -1,0 +1,4 @@
+[submodule "vendor/splunk-sdk-master"]
+	path = vendor/splunk-sdk-php
+	url = https://github.com/splunk/splunk-sdk-php.git
+	branch = release/1.0.1
