@@ -20,9 +20,14 @@ $splunk_searches['search source="unl-is-idm" | transaction conn maxpause=35s | w
 
 		$time = SyslogAccumulator\SplunkMonitor::getLastSplunkIndexTimestamp($result['_indextime']);
 
+		$source_ip = null;
+		if (isset($result['source_ip'])) {
+			$source_ip = $result['source_ip'];
+		}
+
 		$subject->addEvent(
 				$result['host'],       // e.g. ldap-test-1.unl.edu
-				$result['source_ip'],  // e.g. 129.93.1.1
+				$source_ip,            // e.g. 129.93.1.1
 				$time,                 // timestamp of event
 				sha1($result['_raw']), // unique key for this event
 				$result['_raw']        // store raw data for auditing
