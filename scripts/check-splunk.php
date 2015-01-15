@@ -21,6 +21,8 @@ require_once $config_file;
 
 $monitor = new SplunkMonitor($splunk_config);
 
+$start_time = time();
+
 // find events up to 15 minutes ago
 $earliest_time = '-15m';
 
@@ -40,4 +42,4 @@ foreach ($splunk_searches as $searchExpression => $resultCallback) {
     $monitor->searchAndCallback($searchExpression, $resultCallback, $args);
 }
 
-file_put_contents(__DIR__ . '/check-splunk-last-run.txt', time());
+file_put_contents(__DIR__ . '/check-splunk-last-run.txt', $start_time);
