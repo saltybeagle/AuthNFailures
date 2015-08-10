@@ -50,6 +50,12 @@ $splunk_searches['search source="unl-is-idm" | transaction conn maxpause=35s | w
 
 	$subject = new Subject();
 	$subject->setId($result['uid']);
+
+	if (false == $subject->getRecentReset()) {
+		// This subject has never reset their password, ignore counting failures
+		return true;
+	}
+
 	try {
 
 		$time = SyslogAccumulator\SplunkMonitor::getLastSplunkIndexTimestamp($result['_indextime']);
@@ -89,6 +95,11 @@ $splunk_searches['search sourcetype="WinEventLog:Security" (EventCode="4771" AND
 
 	$subject = new Subject();
 	$subject->setId($result['uid']);
+
+	if (false == $subject->getRecentReset()) {
+		// This subject has never reset their password, ignore counting failures
+		return true;
+	}
 
 	try {
 
